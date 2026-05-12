@@ -8,18 +8,12 @@ const options = {
     info: {
       title: "Agent IDE Authentication API",
       version: "1.0.0",
-      description:
-        "Secure authentication API for signup, login, JWT authentication, email verification, and password reset.",
+      description: "Authentication API documentation",
     },
 
     servers: [
       {
         url: "https://backend-pharma-g72l.onrender.com",
-        description: "Production Server",
-      },
-      {
-        url: "http://localhost:5000",
-        description: "Local Server",
       },
     ],
 
@@ -31,16 +25,53 @@ const options = {
           bearerFormat: "JWT",
         },
       },
-    },
 
-    security: [
-      {
-        BearerAuth: [],
+      schemas: {
+        SuccessResponse: {
+          type: "object",
+
+          properties: {
+            success: {
+              type: "boolean",
+              example: true,
+            },
+
+            message: {
+              type: "string",
+              example: "Operation successful",
+            },
+
+            data: {
+              type: "object",
+              nullable: true,
+            },
+          },
+        },
+
+        ErrorResponse: {
+          type: "object",
+
+          properties: {
+            success: {
+              type: "boolean",
+              example: false,
+            },
+
+            message: {
+              type: "string",
+              example: "Something went wrong",
+            },
+
+            data: {
+              type: "object",
+              nullable: true,
+            },
+          },
+        },
       },
-    ],
+    },
   },
 
-  // IMPORTANT FIX
   apis: [path.join(__dirname, "../routes/*.js")],
 };
 
