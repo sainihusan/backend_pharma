@@ -5,10 +5,13 @@ const nodemailer = require("nodemailer");
 require("dotenv").config();
 
 const transporter = nodemailer.createTransport({
-  host: process.env.SMTP_HOST,
-  port: Number(process.env.SMTP_PORT),
+  host: "smtp-relay.brevo.com",
 
-  secure: false, // use false for port 587
+  port: 587,
+
+  secure: false,
+
+  requireTLS: true,
 
   auth: {
     user: process.env.SMTP_USER,
@@ -17,12 +20,16 @@ const transporter = nodemailer.createTransport({
 
   tls: {
     rejectUnauthorized: false,
+    minVersion: "TLSv1.2",
   },
 
-  connectionTimeout: 10000,
+  family: 4,
+
+  connectionTimeout: 30000,
+  greetingTimeout: 30000,
+  socketTimeout: 30000,
 });
 
-// Verify SMTP connection
 transporter.verify((error, success) => {
   if (error) {
     console.log("SMTP ERROR:", error);
@@ -31,9 +38,6 @@ transporter.verify((error, success) => {
   }
 });
 
-/**
- * Sends OTP Email
- */
 const sendOtpEmail = async (
   to,
   otp,
@@ -46,16 +50,14 @@ const sendOtpEmail = async (
     subject,
 
     html: `
-      <div style="font-family: Arial; padding: 20px;">
+      <div>
         <h2>Agent IDE</h2>
 
-        <p>Your OTP code is:</p>
+        <p>Your OTP is:</p>
 
-        <h1 style="letter-spacing: 5px;">
-          ${otp}
-        </h1>
+        <h1>${otp}</h1>
 
-        <p>This OTP expires in 10 minutes.</p>
+        <p>Expires in 10 minutes.</p>
       </div>
     `,
   };
