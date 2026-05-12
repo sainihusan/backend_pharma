@@ -3,20 +3,25 @@ const swaggerJsdoc = require("swagger-jsdoc");
 const options = {
   definition: {
     openapi: "3.0.0",
+
     info: {
       title: "Agent IDE Authentication API",
       version: "1.0.0",
       description:
-        "Secure authentication API for the Agent IDE application.  " +
-        "Supports signup with email verification, login/logout with JWT, " +
-        "and password reset via OTP.",
+        "Secure authentication API for the Agent IDE application. Supports signup, login, JWT authentication, email verification, and password reset APIs.",
     },
+
     servers: [
       {
-        url: `https://7z14kgzx-5000.inc1.devtunnels.ms/`,
-        description: "Local development server",
+        url: "https://backend-pharma-g72l.onrender.com",
+        description: "Render Production Server",
+      },
+      {
+        url: "http://localhost:5000",
+        description: "Local Development Server",
       },
     ],
+
     components: {
       securitySchemes: {
         BearerAuth: {
@@ -25,27 +30,59 @@ const options = {
           bearerFormat: "JWT",
         },
       },
+
       schemas: {
         SuccessResponse: {
           type: "object",
           properties: {
-            success: { type: "boolean", example: true },
-            message: { type: "string", example: "Operation completed" },
-            data: { type: "object", nullable: true },
+            success: {
+              type: "boolean",
+              example: true,
+            },
+
+            message: {
+              type: "string",
+              example: "Operation completed successfully",
+            },
+
+            data: {
+              type: "object",
+              nullable: true,
+            },
           },
         },
+
         ErrorResponse: {
           type: "object",
           properties: {
-            success: { type: "boolean", example: false },
-            message: { type: "string", example: "Something went wrong" },
-            data: { type: "object", nullable: true },
+            success: {
+              type: "boolean",
+              example: false,
+            },
+
+            message: {
+              type: "string",
+              example: "Something went wrong",
+            },
+
+            data: {
+              type: "object",
+              nullable: true,
+            },
           },
         },
       },
     },
+
+    security: [
+      {
+        BearerAuth: [],
+      },
+    ],
   },
-  apis: ["./src/routes/*.js"],
+
+  // IMPORTANT
+  apis: ["./routes/*.js"],
 };
 
 const swaggerSpec = swaggerJsdoc(options);
