@@ -1,9 +1,10 @@
-const brevo = require("@getbrevo/brevo");
+const SibApiV3Sdk = require("@getbrevo/brevo");
 
-const apiInstance = new brevo.TransactionalEmailsApi();
+const apiInstance =
+  new SibApiV3Sdk.TransactionalEmailsApi();
 
 apiInstance.setApiKey(
-  brevo.TransactionalEmailsApiApiKeys.apiKey,
+  SibApiV3Sdk.TransactionalEmailsApiApiKeys.apiKey,
   process.env.BREVO_API_KEY
 );
 
@@ -13,7 +14,8 @@ const sendOtpEmail = async (
   subject = "Your OTP Code"
 ) => {
 
-  const sendSmtpEmail = new brevo.SendSmtpEmail();
+  const sendSmtpEmail =
+    new SibApiV3Sdk.SendSmtpEmail();
 
   sendSmtpEmail.subject = subject;
 
@@ -42,15 +44,18 @@ const sendOtpEmail = async (
 
   try {
 
-    const response = await apiInstance.sendTransacEmail(
-      sendSmtpEmail
-    );
+    const response =
+      await apiInstance.sendTransacEmail(
+        sendSmtpEmail
+      );
 
-    console.log("EMAIL SENT:", response);
+    console.log("EMAIL SENT SUCCESSFULLY");
+
+    return response;
 
   } catch (error) {
 
-    console.log("EMAIL ERROR:", error);
+    console.log("BREVO ERROR:", error);
 
     throw new Error("Email send failed");
   }
